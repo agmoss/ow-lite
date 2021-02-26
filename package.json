@@ -7,7 +7,9 @@
   "author": "Travis Fischer <travis@automagical.ai>",
   "license": "MIT",
   "scripts": {
-    "test": "ava -v && standard"
+    "test": "ava -v && standard",
+    "build": "tsc",
+    "prebuild":"rm -rf dist"
   },
   "engines": {
     "node": ">=6"
@@ -19,13 +21,24 @@
     "lite"
   ],
   "devDependencies": {
-    "ava": "^0.25.0",
+    "@ava/typescript": "^1.1.1",
+    "@types/node": "^14.14.31",
+    "ava": "^3.5.0",
     "esm": "^3.0.49",
-    "standard": "^11.0.0"
+    "standard": "^11.0.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.2"
   },
+  "files": [
+    "dist"
+  ],
   "ava": {
+    "extensions": [
+      "ts"
+    ],
     "require": [
-      "esm"
+      "ts-node/register"
     ]
   }
 }
+

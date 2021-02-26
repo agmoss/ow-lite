@@ -1,5 +1,5 @@
 import test from 'ava'
-import m from '..'
+import m from '../lib'
 
 class Unicorn {}
 

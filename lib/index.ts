@@ -1,34 +1,33 @@
-'use strict'
+import symbols from './symbols'
 
-const symbols = require('./lib/symbols')
+import array from './predicates/array'
+import boolean from './predicates/boolean'
+import date from './predicates/date'
+import number from './predicates/number'
+import object from './predicates/object'
+import string from './predicates/string'
 
-const array = require('./lib/predicates/array')
-const boolean = require('./lib/predicates/boolean')
-const date = require('./lib/predicates/date')
-const func = require('./lib/predicates/function')
-const number = require('./lib/predicates/number')
-const object = require('./lib/predicates/object')
-const string = require('./lib/predicates/string')
 
 const typePredicates = {
   array,
   boolean,
   date,
-  function: func,
+  function: symbols.func,
   number,
   object,
   string
 }
 
+
 const createOw = ({
   validators = [],
   predicates = typePredicates,
   type = null
-} = { }) => {
+} = {}) => {
   const ow = new Proxy(function () { }, {
     get: (obj, key) => {
       if (key === symbols.validate) {
-        return (value, label = 'argument') => {
+        return (value: any, label = 'argument') => {
           if (!type) {
             return new Error('missing required type specifier')
           }
@@ -49,7 +48,7 @@ const createOw = ({
       }
 
       if (!predicates) {
-        throw new Error(`Unknown \`${type}\` predicate \`${key}\``)
+        throw new Error(`Unknown \`${type}\` predicate \`${String(key)}\``)
       }
 
       const predicate = predicates[key]
@@ -80,7 +79,7 @@ const createOw = ({
         if (fn) {
           return new Proxy(function () { }, {
             get: () => {
-              throw new Error(`invalid use of functional predicate "${key}"`)
+              throw new Error(`invalid use of functional predicate "${String(key)}"`)
             },
 
             apply: (obj, thisArg, args) => {
@@ -115,4 +114,4 @@ const createOw = ({
   return ow
 }
 
-module.exports = createOw()
+export default createOw()

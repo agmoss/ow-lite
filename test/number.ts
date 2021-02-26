@@ -1,5 +1,5 @@
 import test from 'ava'
-import m from '..'
+import m from '../lib'
 
 test('number', t => {
   t.notThrows(() => m(1, m.number))
